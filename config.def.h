@@ -23,24 +23,6 @@ static const char *colors[][3]      = {
         [SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
 
-/* recording (package gpu-recorder-cli dongo) */
-/* WIP */
-
-/* screenshot */
-static const char *screenshot[]= {"scrot", "/home/vq6oon/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg", NULL};
-
-/* mouse fantech */
-static const char *mousetweak[]={"python3", "/home/vq6oon/.FantechX9ThorDriver/driver_frontend.py", NULL};
-
-/* volume */
-static const char *volup[] = {"amixer", "set", "Master", "5%+", NULL};
-static const char *voldown[] = {"amixer", "set", "Master", "5%-", NULL};
-static const char *voltoggle[] = {"amixer", "set", "Master", "toggle", NULL};
-
-/* brightness */
-static const char *brightup[] = {"brightnessctl", "set", "+5%", NULL};
-static const char *brightdown[] = {"brightnessctl", "set", "5%-", NULL};
-
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -58,7 +40,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 static const int refreshrate = 60;  /* refresh rate (per second) for client move/resize */
 
@@ -84,10 +66,31 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "kitty", NULL };
+static const char *code[] = { "code", NULL };
+static const char *discord[] = { "discord", NULL };
+static const char *spotify[] = { "spotify", NULL };
+static const char *browser[] = { "firefox", NULL };
+static const char *obs[] = { "obs", NULL };
+static const char *restart[] = { "systemctl", "reboot", NULL };
+static const char *shutdown[] = { "systemctl", "poweroff", NULL };
+static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
+static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
+static const char *volup[] = { "amixer", "set", "Master", "5%+", NULL };
+static const char *voldown[] = { "amixer", "set", "Master", "5%-", NULL };
+static const char *voltoggle[] = { "amixer", "set", "Master", "toggle", NULL };
+static const char *brightup[] = { "brightnessctl", "set", "+5%", NULL };
+static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY|ShiftMask,				XK_f,	   spawn,		   {.v = mousetweak} },
+	{ MODKEY,						XK_r,	   spawn,          {.v = obs} },
+	{ MODKEY,						XK_d,	   spawn,          {.v = discord} },
+	{ MODKEY,						XK_m,	   spawn,          {.v = spotify} },
+	{ MODKEY,						XK_b,	   spawn,          {.v = browser} },
+	{ MODKEY,						XK_c,	   spawn,          {.v = code} },
+	{ MODKEY|ShiftMask,				XK_r,	   spawn,		   {.v = restart} },
+	{ MODKEY|ShiftMask,				XK_s,	   spawn,		   {.v = shutdown} },
+	{ MODKEY,						XK_f,	   spawn,		   {.v = mousetweak} },
 	{ MODKEY, 						XK_F9, 	   spawn, 		   {.v = brightup} },
 	{ MODKEY,						XK_F8, 	   spawn,		   {.v = brightdown} },
 	{ MODKEY,						XK_Print,  spawn, 	   	   {.v = screenshot } },
@@ -95,20 +98,20 @@ static const Key keys[] = {
 	{ MODKEY,						XK_F5,     spawn,          {.v = voldown } },
 	{ MODKEY,						XK_F3,     spawn,		   {.v = voltoggle } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,		                XK_t,	   spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_o,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY,                       XK_q,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_Down,   moveresize,     {.v = "0x 25y 0w 0h" } },
