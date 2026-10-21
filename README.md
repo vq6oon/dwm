@@ -3,7 +3,7 @@
 My personal [dwm](https://dwm.suckless.org/) setup with all patches already applied. No manual patching needed, just clone, build, and go.
 
 <p align="center">
-  <img src="screenshots/dwm.png" alt="dwm screenshot" width="800">
+  <img src="screenshots/dwm.jpg" alt="dwm screenshot" width="800">
 </p>
 
 ## Patches
