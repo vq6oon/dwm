@@ -12,6 +12,7 @@ My personal [dwm](https://dwm.suckless.org/) setup with all patches already appl
 - [fullgaps](https://dwm.suckless.org/patches/fullgaps/)
 - [moveresize](https://dwm.suckless.org/patches/moveresize/)
 - [noborderfloatingfix](https://dwm.suckless.org/patches/noborder/)
+- [movestack](https://dwm.suckless.org/patches/movestack/)
 
 The `patches/` folder is kept for reference and credit only. They are already applied to the source.
 
