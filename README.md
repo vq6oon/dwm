@@ -14,6 +14,7 @@ My personal [dwm](https://dwm.suckless.org/) setup with all patches already appl
 - [noborderfloatingfix](https://dwm.suckless.org/patches/noborder/)
 - [movestack](https://dwm.suckless.org/patches/movestack/)
 - [pertag](https://dwm.suckless.org/patches/pertag/)
+- [status2d](https://dwm.suckless.org/patches/status2d/)
 
 The `patches/` folder is kept for reference and credit only. They are already applied to the source.
 
