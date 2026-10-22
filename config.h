@@ -11,7 +11,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 0;        /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
-static const char *fonts[]          = { "monospace:size=10" };
+static const char *fonts[]          = { "monospace:size=10", "FontAwesome:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#0b1626";
 static const char col_gray2[]       = "#1a2f4a"; 
@@ -47,9 +47,9 @@ static const int refreshrate = 60;  /* refresh rate (per second) for client move
 
 static const Layout layouts[] = {
         /* symbol     arrange function */
-        { "[]=",      tile },    /* first entry is default */
-        { "><>",      NULL },    /* no layout function means floating behavior */
-        { "[M]",      monocle },
+        { "[]= \uF1B0",      tile },    /* first entry is default */
+        { "><> \uF1B0",      NULL },    /* no layout function means floating behavior */
+        { "[M] \uF1B0",      monocle },
 };
 
 /* key definitions */
