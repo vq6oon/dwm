@@ -1,4 +1,4 @@
-k#!/bin/bash
+#!/bin/bash
 
 # usage: theme [wallpaper]
 # no argument = use the wallpaper saved by nitrogen

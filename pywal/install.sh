@@ -10,4 +10,4 @@ install -m 755 "$Dir/theme-watch" ~/.local/bin/theme-watch
 cp "$Dir"/templates/* ~/.config/wal/templates/
 
 echo "done. pick a wallpaper in nitrogen and run: theme"
-echo "for automatic updates, add this to ~/.xsessionrc: theme-watch &"
+echo "for automatic updates, add this to ~/.xsessionrc: ~/.local/bin/theme-watch &"
