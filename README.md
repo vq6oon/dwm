@@ -77,6 +77,16 @@ To make kitty follow the wallpaper too, add this to `~/.config/kitty/kitty.conf`
 
 Without pywal, dwm simply uses the colors set in `config.h`. Warning colors in the status bar (medium, low, mute) stay fixed on purpose, so they stay readable on any wallpaper.
 
+## Emoji picker (optional)
+
+Type emoji in any app with `MODKEY+e`, using [bemoji](https://github.com/marty-oehme/bemoji) and dmenu.
+
+    sudo apt install xclip curl fonts-noto-color-emoji
+    git clone https://github.com/marty-oehme/bemoji /tmp/bemoji
+    install -m 755 /tmp/bemoji/bemoji ~/.local/bin/bemoji
+
+The emoji list is downloaded on first run, so it needs an internet connection once.
+
 ## Configuration
 
 All settings live in `config.h`. Edit it, then rebuild with `sudo make clean install` and restart dwm.
@@ -85,6 +95,7 @@ All settings live in `config.h`. Edit it, then rebuild with `sudo make clean ins
 |---|---|
 | `MODKEY+w` | refresh colors from wallpaper (needs pywal) |
 | `MODKEY+Shift+F5` | reload bar colors from X resources |
+| `MODKEY+v` | emoji picker (needs bemoji) |
 
 ## Credits
 
