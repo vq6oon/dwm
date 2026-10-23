@@ -3,13 +3,16 @@
 # usage: theme [wallpaper]
 # no argument = use the wallpaper saved by nitrogen
 
+export PATH="$HOME/.local/bin:$PATH"
+
 Wall="$1"
 [ -z "$Wall" ] && Wall=$(grep -m1 '^file=' ~/.config/nitrogen/bg-saved.cfg | cut -d= -f2-)
-[ -f "$Wall" ] || { echo "wallpaper not found"; exit 1; }
+Wall=$(realpath -- "$Wall" 2>/dev/null)
+[ -f "$Wall" ] || { echo "wallpaper not found: $Wall" >&2; exit 1; }
 
-[ -n "$1" ] && nitrogen --set-zoom-fill "$1" --save
+[ -n "$1" ] && nitrogen --set-zoom-fill "$Wall" --save
 
-wal -i "$Wall" -n -s -t -q
+wal -i "$Wall" -n -s -t -q 2>/dev/null
 xrdb -merge ~/.cache/wal/dwm-xres
 xdotool key super+shift+F5
 pkill -f sxstatus; sxstatus &
