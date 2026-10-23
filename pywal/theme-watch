@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# run theme whenever nitrogen applies a wallpaper (event based)
+
+export PATH="$HOME/.local/bin:$PATH"
+
+Dir="$HOME/.config/nitrogen"
+Last=$(grep -m1 '^file=' "$Dir/bg-saved.cfg" 2>/dev/null | cut -d= -f2-)
+
+while inotifywait -qq -e close_write,moved_to "$Dir"; do
+    sleep 1
+    Now=$(grep -m1 '^file=' "$Dir/bg-saved.cfg" 2>/dev/null | cut -d= -f2-)
+    if [ -n "$Now" ] && [ "$Now" != "$Last" ]; then
+        Last="$Now"
+        theme
+    fi
+done
