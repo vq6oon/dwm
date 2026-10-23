@@ -22,7 +22,7 @@ The `patches/` folder is kept for reference and credit only. They are already ap
 
 ## Dependencies
 
-    sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev git fontforge python3-fontforge fonts-font-awesome
+    sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev git fontforge python3-fontforge fonts-font-awesome xdotool pipx nitrogen inotify-tools
 
 ## Font
 
