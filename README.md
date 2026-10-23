@@ -22,7 +22,11 @@ The `patches/` folder is kept for reference and credit only. They are already ap
 
 ## Dependencies
 
-    sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev git fontforge python3-fontforge fonts-font-awesome xdotool pipx nitrogen inotify-tools
+    sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev git fontforge python3-fontforge fonts-font-awesome
+
+For the optional wallpaper theme (see below):
+
+    sudo apt install xdotool pipx nitrogen inotify-tools
 
 ## Font
 
@@ -55,19 +59,26 @@ The status bar is a separate project: [sxstatus](https://github.com/vq6oon/sxsta
 
 Bar colors follow the wallpaper using [pywal](https://github.com/dylanaraps/pywal) and the xrdb patch. The status bar colors from [sxstatus](https://github.com/vq6oon/sxstatus) follow too.
 
-    sudo apt install xdotool pipx nitrogen
     pipx install pywal
     ./pywal/install.sh
 
 Pick a wallpaper in nitrogen, then run `theme` (or press `MODKEY+w`). It regenerates the colors from the wallpaper, reloads the bar and restarts sxstatus.
 
-To keep the colors after login, add this to `~/.xsessionrc` before dwm starts:
+To update automatically whenever you apply a new wallpaper in nitrogen, and to keep the colors after login, add this to `~/.xsessionrc`:
 
     xrdb -merge ~/.cache/wal/dwm-xres
+    ~/.local/bin/theme-watch &
+
+If you start dwm with `startx`, put the same lines in `~/.xinitrc` before `exec dwm`, since `~/.xsessionrc` is only read by display managers.
+
+To make kitty follow the wallpaper too, add this to `~/.config/kitty/kitty.conf` below the theme block:
+
+    include ~/.cache/wal/colors-kitty.conf
 
 Without pywal, dwm simply uses the colors set in `config.h`. Warning colors in the status bar (medium, low, mute) stay fixed on purpose, so they stay readable on any wallpaper.
 
 ## Configuration
+
 All settings live in `config.h`. Edit it, then rebuild with `sudo make clean install` and restart dwm.
 
 | Key | Action |
