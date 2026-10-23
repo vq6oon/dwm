@@ -75,6 +75,7 @@ static const char *browser[] = { "firefox", NULL };
 static const char *obs[] = { "obs", NULL };
 static const char *restart[] = { "systemctl", "reboot", NULL };
 static const char *shutdown[] = { "systemctl", "poweroff", NULL };
+static const char *emoji[] = { "/bin/sh", "-c", "$HOME/.local/bin/bemoji -t", NULL };
 static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
 static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
 static const char *volup[] = { "amixer", "set", "Master", "5%+", NULL };
@@ -85,6 +86,7 @@ static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 
 static const Key keys[] = {
         /* modifier                     key        function        argument */
+        { MODKEY,                       XK_v,      spawn,          {.v = emoji } },
         { MODKEY|ShiftMask,             XK_F5,     xrdb,           {.v = NULL } },
         { MODKEY,                       XK_r,      spawn,          {.v = obs} },
         { MODKEY,                       XK_d,      spawn,          {.v = discord} },
