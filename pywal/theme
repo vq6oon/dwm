@@ -1,4 +1,4 @@
-#!/bin/bash
+k#!/bin/bash
 
 # usage: theme [wallpaper]
 # no argument = use the wallpaper saved by nitrogen
@@ -15,4 +15,5 @@ Wall=$(realpath -- "$Wall" 2>/dev/null)
 wal -i "$Wall" -n -s -t -q 2>/dev/null
 xrdb -merge ~/.cache/wal/dwm-xres
 xdotool key super+shift+F5
+pkill -USR1 -x kitty
 pkill -f sxstatus; sxstatus &
