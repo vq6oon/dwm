@@ -82,7 +82,7 @@ static const char *wifimenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/men
 static const char *btmenu[]     = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/bt_menu", NULL };
 static const char *wifitoggle[] = { "/bin/sh", "-c", "if [ \"$(nmcli radio wifi)\" = enabled ]; then nmcli radio wifi off; else nmcli radio wifi on; fi", NULL };
 static const char *bttoggle[]   = { "/bin/sh", "-c", "if bluetoothctl show | grep -q 'Powered: yes'; then bluetoothctl power off; else rfkill unblock bluetooth; bluetoothctl power on; fi", NULL };
-static const char *emoji[] = { "/bin/sh", "-c", "$HOME/.local/bin/bemoji -t", NULL };
+static const char *emoji[] = { "/bin/sh", "-c", "BEMOJI_PICKER_CMD=\"$HOME/.config/sxstatus/menus/dmenu_sx -p emoji -i -l 20\" $HOME/.local/bin/bemoji -t", NULL };
 static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
 static const char *shotcrop[]   = { "/bin/sh", "-c", "mkdir -p $HOME/Pictures/Screenshots && maim -s | tee \"$HOME/Pictures/Screenshots/$(date +%Y-%m-%d-%H%M%S)-crop.png\" | xclip -selection clipboard -t image/png", NULL };
 static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
