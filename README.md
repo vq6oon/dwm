@@ -87,20 +87,104 @@ Type emoji in any app with `MODKEY+e`, using [bemoji](https://github.com/marty-o
 
 The emoji list is downloaded on first run, so it needs an internet connection once.
 
-## Configuration
+### Launcher
 
-All settings live in `config.h`. Edit it, then rebuild with `sudo make clean install` and restart dwm.
+| Keybind | Action |
+| --- | --- |
+| `Super + P` | Open launcher (dmenu) |
 
-| Key | Action |
-|---|---|
-| `MODKEY+w` | refresh colors from wallpaper (needs pywal) |
-| `MODKEY+Shift+F5` | reload bar colors from X resources |
-| `MODKEY+v` | emoji picker (needs bemoji) |
-| `MODKEY+e` | file manager (Thunar) |
-| `MODKEY+n` | wifi menu |
-| `MODKEY+Shift+n` | toggle wifi |
-| `MODKEY+g` | bluetooth menu |
-| `MODKEY+Shift+g` | toggle bluetooth |
+---
+
+### Workspaces (Tags)
+
+| Keybind | Action |
+| --- | --- |
+| `Super + 1~9` | Go to workspace 1~9 |
+| `Super + Shift + 1~9` | Move window to workspace 1~9 |
+| `Super + Tab` | Go to previously active workspace |
+| `Super + 0` | View all windows from all workspaces |
+| `Super + Shift + 0` | Assign window to all workspaces |
+
+---
+
+### Window actions
+
+| Keybind | Action |
+| --- | --- |
+| `Super + J` / `K` | Focus next / previous window |
+| `Super + Shift + J` / `K` | Move window down / up the stack |
+| `Super + Return` | Promote focused window to master area |
+| `Super + H` / `L` | Decrease / Increase master area size |
+| `Super + I` / `O` | Increase / Decrease number of master windows |
+| `Super + Arrows` | Move floating window |
+| `Super + Shift + Arrows` | Resize floating window |
+| `Super + Ctrl + Arrows` | Snap floating window edge |
+| `Super + Shift + T` | Set Tiled layout |
+| `Super + Shift + F` | Set Floating layout |
+| `Super + Shift + M` | Set Monocle (Fullscreen) layout |
+| `Super + Space` | Toggle between current and previous layout |
+| `Super + Shift + Space` | Toggle floating mode for window |
+| `Super + -` / `=` | Decrease / Increase gaps between windows |
+| `Super + Shift + =` | Reset/remove gaps |
+| `Super + Q` | Close window |
+
+---
+
+### Applications
+
+| Keybind | Action |
+| --- | --- |
+| `Super + T` | Terminal (default: kitty) |
+| `Super + B` | Browser (default: firefox) |
+| `Super + C` | Editor (default: code) |
+| `Super + E` | File explorer (default: thunar) |
+| `Super + D` | Communication (discord) |
+| `Super + M` | Music (spotify) |
+| `Super + R` | OBS Studio |
+| `Super + F` | Mouse driver (Fantech X9 Thor) |
+
+---
+
+### Utilities
+
+| Keybind | Action |
+| --- | --- |
+| `Super + Print` | Screenshot (full screen) |
+| `Super + Shift + Print` | Screenshot (region/crop) |
+| `Super + Shift + F5` | Reload colors from X resources (pywal) |
+
+---
+
+### Hardware & Media
+
+| Keybind | Action |
+| --- | --- |
+| `Super + F6` / `F5` | Volume up / Volume down |
+| `Super + F3` | Mute volume |
+| `Super + F9` / `F8` | Brightness up / Brightness down |
+| `Super + N` | Open WiFi menu |
+| `Super + Shift + N` | Toggle WiFi on/off |
+| `Super + G` | Open Bluetooth menu |
+| `Super + Shift + G` | Toggle Bluetooth on/off |
+
+---
+
+### System & Miscellaneous
+
+| Keybind | Action |
+| --- | --- |
+| `Super + Shift + B` | Toggle top status bar visibility |
+| `Super + Shift + R` | Reboot system |
+| `Super + Shift + S` | Shutdown system |
+| `Super + Shift + Q` | Quit dwm |
+
+---
+
+### Clipboard / Emoji
+
+| Keybind | Action |
+| --- | --- |
+| `Super + V` | Open emoji picker (bemoji) |
 
 ## Credits
 
