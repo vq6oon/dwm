@@ -7,6 +7,7 @@ Dir=$(dirname "$(readlink -f "$0")")
 mkdir -p ~/.local/bin ~/.config/wal/templates
 install -m 755 "$Dir/theme" ~/.local/bin/theme
 install -m 755 "$Dir/theme-watch" ~/.local/bin/theme-watch
+install -m 755 "$Dir/theme-dunst" ~/.local/bin/theme-dunst
 cp "$Dir"/templates/* ~/.config/wal/templates/
 
 echo "done. pick a wallpaper in nitrogen and run: theme"

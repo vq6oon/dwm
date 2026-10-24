@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# write dunst colors from the wal palette and the status bar accent
+
+. ~/.cache/wal/colors.sh 2>/dev/null
+. ~/.cache/wal/sxstatus-colors 2>/dev/null
+[ -n "$Accent" ] || Accent="$color4"
+[ -n "$Accent" ] || exit 0
+
+Dir="$HOME/.config/dunst"
+mkdir -p "$Dir"
+rm -f "$Dir/dunstrc"
+
+cat > "$Dir/dunstrc" << CONF
+[global]
+    frame_width = 2
+    frame_color = "$Accent"
+    separator_color = frame
+
+[urgency_low]
+    background = "$background"
+    foreground = "$foreground"
+    frame_color = "$Accent"
+
+[urgency_normal]
+    background = "$background"
+    foreground = "$foreground"
+    frame_color = "$Accent"
+
+[urgency_critical]
+    background = "$background"
+    foreground = "$foreground"
+    frame_color = "#c4696a"
+CONF
+
+pkill -x dunst; setsid -f dunst >/dev/null 2>&1

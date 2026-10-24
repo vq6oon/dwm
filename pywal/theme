@@ -16,4 +16,5 @@ wal -i "$Wall" -n -s -t -q 2>/dev/null
 xrdb -merge ~/.cache/wal/dwm-xres
 xdotool key super+shift+F5
 pkill -USR1 -x kitty
+theme-dunst
 pkill -f sxstatus; sxstatus &
