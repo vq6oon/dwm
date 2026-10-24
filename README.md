@@ -26,7 +26,7 @@ The `patches/` folder is kept for reference and credit only. They are already ap
 
 For the optional wallpaper theme (see below):
 
-    sudo apt install xdotool pipx nitrogen inotify-tools
+    sudo apt install xdotool pipx nitrogen inotify-tools dunst libnotify-bin adwaita-icon-theme
 
 ## Font
 
