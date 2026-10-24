@@ -164,6 +164,8 @@ There is no confirmation for reboot and shutdown.
 
 | Keybind | Action |
 | --- | --- |
+| `Super + Shift + P` | Power profile menu (needs power-profiles-daemon) |
+| `Super + Ctrl + P` | Toggle picom on/off |
 | `Super + Shift + B` | Toggle status bar |
 | `Super + Shift + F5` | Reload bar colors from X resources |
 | `Super + Shift + R` | Reboot |
