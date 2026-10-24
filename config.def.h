@@ -82,7 +82,7 @@ static const char *wifitoggle[] = { "/bin/sh", "-c", "if [ \"$(nmcli radio wifi)
 static const char *bttoggle[]   = { "/bin/sh", "-c", "if bluetoothctl show | grep -q 'Powered: yes'; then bluetoothctl power off; else rfkill unblock bluetooth; bluetoothctl power on; fi", NULL };
 static const char *emoji[] = { "/bin/sh", "-c", "$HOME/.local/bin/bemoji -t", NULL };
 static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
-static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
+static const char *shotcrop[]   = { "/bin/sh", "-c", "mkdir -p $HOME/Pictures/Screenshots && maim -s | tee \"$HOME/Pictures/Screenshots/$(date +%Y-%m-%d-%H%M%S)-crop.png\" | xclip -selection clipboard -t image/png", NULL };static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
 static const char *volup[] = { "amixer", "set", "Master", "5%+", NULL };
 static const char *voldown[] = { "amixer", "set", "Master", "5%-", NULL };
 static const char *voltoggle[] = { "amixer", "set", "Master", "toggle", NULL };
@@ -109,6 +109,7 @@ static const Key keys[] = {
         { MODKEY,                       XK_F9,     spawn,          {.v = brightup} },
         { MODKEY,                       XK_F8,     spawn,          {.v = brightdown} },
         { MODKEY,                       XK_Print,  spawn,          {.v = screenshot } },
+        { MODKEY|ShiftMask,             XK_Print,  spawn,          {.v = shotcrop } },
         { MODKEY,                       XK_F6,     spawn,          {.v = volup } },
         { MODKEY,                       XK_F5,     spawn,          {.v = voldown } },
         { MODKEY,                       XK_F3,     spawn,          {.v = voltoggle } },
