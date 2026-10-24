@@ -97,6 +97,10 @@ All settings live in `config.h`. Edit it, then rebuild with `sudo make clean ins
 | `MODKEY+Shift+F5` | reload bar colors from X resources |
 | `MODKEY+v` | emoji picker (needs bemoji) |
 | `MODKEY+e` | file manager (Thunar) |
+| `MODKEY+n` | wifi menu |
+| `MODKEY+Shift+n` | toggle wifi |
+| `MODKEY+g` | bluetooth menu |
+| `MODKEY+Shift+g` | toggle bluetooth |
 
 ## Credits
 
