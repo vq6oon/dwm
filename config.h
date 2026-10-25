@@ -77,7 +77,7 @@ static const char *restart[] = { "systemctl", "reboot", NULL };
 static const char *shutdown[] = { "systemctl", "poweroff", NULL };
 static const char *files[] = { "thunar", NULL };
 static const char *powermenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/power_menu", NULL };
-static const char *picomtoggle[] = { "/bin/sh", "-c", "pkill -x picom || picom -b", NULL };
+static const char *picommenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/picom_menu", NULL };
 static const char *wifimenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/wifi_menu", NULL };
 static const char *btmenu[]     = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/bt_menu", NULL };
 static const char *wifitoggle[] = { "/bin/sh", "-c", "if [ \"$(nmcli radio wifi)\" = enabled ]; then nmcli radio wifi off; else nmcli radio wifi on; fi", NULL };
@@ -95,7 +95,7 @@ static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 static const Key keys[] = {
         /* modifier                     key        function        argument */
         { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = powermenu } },
-        { MODKEY|ControlMask,           XK_p,      spawn,          {.v = picomtoggle } },
+        { MODKEY|ControlMask,           XK_p,      spawn,          {.v = picommenu } },
         { MODKEY,                       XK_n,      spawn,          {.v = wifimenu } },
         { MODKEY|ShiftMask,             XK_n,      spawn,          {.v = wifitoggle } },
         { MODKEY,                       XK_g,      spawn,          {.v = btmenu } },
