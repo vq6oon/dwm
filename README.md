@@ -28,7 +28,7 @@ Build:
 
 Programs used by the keybindings (install what you need, or change them in `config.h`):
 
-    sudo apt install dmenu kitty thunar scrot maim xclip brightnessctl alsa-utils network-manager bluez rfkill
+    sudo apt install dmenu kitty thunar scrot maim xclip brightnessctl alsa-utils network-manager bluez rfkill power-profiles-daemon picom
 
 Firefox, VS Code, Discord, Spotify and OBS are launched by name, so install them separately or edit `config.h`.
 
@@ -165,7 +165,7 @@ There is no confirmation for reboot and shutdown.
 | Keybind | Action |
 | --- | --- |
 | `Super + Shift + P` | Power profile menu (needs power-profiles-daemon) |
-| `Super + Ctrl + P` | Toggle picom on/off |
+| `Super + Ctrl + P` | Picom mode menu: blur + opacity + vsync, opacity + vsync, vsync only, off |
 | `Super + Shift + B` | Toggle status bar |
 | `Super + Shift + F5` | Reload bar colors from X resources |
 | `Super + Shift + R` | Reboot |
@@ -211,30 +211,23 @@ The emoji list is downloaded on first run, so it needs an internet connection on
 
 ## Transparency and blur (optional)
 
-Opacity and blur come from [picom](https://github.com/yshui/picom), not from dwm.
+Opacity and blur come from [picom](https://github.com/yshui/picom), not from dwm. Three ready-made configs live in `picom/`, each one heavier than the last:
+
+| Mode | What it does |
+| --- | --- |
+| `vsync` | vsync only, no transparency |
+| `opacity` | vsync and 0.9 window opacity |
+| `blur` | opacity, vsync and dual kawase blur (heaviest) |
 
     sudo apt install picom
+    mkdir -p ~/.config/picom
+    cp picom/*.conf ~/.config/picom/
 
-Example `~/.config/picom/picom.conf`:
+`Super + Ctrl + P` opens a menu to switch between the modes or turn picom off, and the choice is remembered for the next login. The menu comes from [sxstatus](https://github.com/vq6oon/sxstatus). To start the last chosen mode at login, add this to `~/.xsessionrc`:
 
-    backend = "glx";
-    vsync = true;
+    ~/.config/sxstatus/menus/picom_menu restore &
 
-    active-opacity = 0.9;
-    inactive-opacity = 0.9;
-    frame-opacity = 1.0;
-
-    opacity-rule = [
-      "100:fullscreen"
-    ];
-
-    blur-method = "dual_kawase";
-    blur-strength = 5;
-    blur-background-exclude = [
-      "fullscreen"
-    ];
-
-Start it with `picom &` in your session file. To exclude a window from the opacity, add a rule such as `"100:class_g = 'firefox'"` (find the class with `xprop WM_CLASS`).
+Blur is heavy on the GPU and can cause stutter and audio crackle while screen sharing or mirroring a phone with scrcpy. Use the `vsync` mode or turn picom off while streaming.
 
 ## Configuration
 
