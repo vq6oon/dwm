@@ -20,3 +20,4 @@ xdotool key super+shift+F5
 pkill -USR1 -x kitty
 theme-dunst
 pkill -f sxstatus; sxstatus &
+command -v pywalfox >/dev/null && timeout 5 pywalfox update >/dev/null 2>&1 &
