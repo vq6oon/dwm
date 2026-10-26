@@ -39,4 +39,12 @@ for key in background foreground; do
     [ -n "$old" ] && sed -i "s|^$key=.*|$key='$(soft "$old")'|" "$Dir/colors.sh"
 done
 
+
+# firefox (pywalfox reads this palette file)
+if [ -f "$Dir/colors" ]; then
+    while read -r c; do
+        [ -n "$c" ] && soft "$c" && echo
+    done < "$Dir/colors" > "$Dir/colors.new" && mv "$Dir/colors.new" "$Dir/colors"
+fi
+
 echo "neutralized (saturation $Sat)"
