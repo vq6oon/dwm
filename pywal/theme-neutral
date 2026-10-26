@@ -19,7 +19,7 @@ soft() {
         printf "#%02x%02x%02x", int(l + (r - l) * k), int(l + (g - l) * k), int(l + (b - l) * k) }'
 }
 
-Dir="$HOME/.cache/wal"
+Dir="${WAL_DIR:-$HOME/.cache/wal}"
 
 # dwm bar (the selected tag keeps the accent)
 for key in normbgcolor normfgcolor normbordercolor selfgcolor; do

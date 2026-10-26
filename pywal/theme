@@ -12,9 +12,25 @@ Wall=$(realpath -- "$Wall" 2>/dev/null)
 
 [ -n "$1" ] && nitrogen --set-zoom-fill "$Wall" --save
 
-wal -i "$Wall" -n -s -t -q 2>/dev/null
+# build the palette in a work folder, so apps that watch ~/.cache/wal
+# (pywalfox does) only ever see the finished palette
+Work="$HOME/.cache/wal-work"
+mkdir -p "$Work" "$HOME/.cache/wal"
+XDG_CACHE_HOME="$Work" wal -i "$Wall" -n -s -t -q 2>/dev/null
+[ -f "$Work/wal/colors" ] || { echo "wal did not write to $Work/wal" >&2; exit 1; }
+
+export WAL_DIR="$Work/wal"
 theme-accent "$Wall"
 theme-neutral "$Wall"
+unset WAL_DIR
+
+# publish the finished files, one atomic rename each
+for f in "$Work"/wal/*; do
+    [ -f "$f" ] || continue
+    n=$(basename "$f")
+    cp -f "$f" "$HOME/.cache/wal/.$n.tmp" && mv -f "$HOME/.cache/wal/.$n.tmp" "$HOME/.cache/wal/$n"
+done
+
 xrdb -merge ~/.cache/wal/dwm-xres
 xdotool key super+shift+F5
 pkill -USR1 -x kitty

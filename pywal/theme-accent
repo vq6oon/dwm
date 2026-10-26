@@ -48,10 +48,10 @@ for _ in 1 2 3 4 5 6 7 8 9 10; do
 done
 Accent=$(printf '#%02x%02x%02x' $r $g $b)
 
-printf 'Accent="%s"\n' "$Accent" > ~/.cache/wal/sxstatus-colors
+printf 'Accent="%s"\n' "$Accent" > "${WAL_DIR:-$HOME/.cache/wal}/sxstatus-colors"
 
 # selected tag in the dwm bar follows the accent too
-Xres="$HOME/.cache/wal/dwm-xres"
+Xres="${WAL_DIR:-$HOME/.cache/wal}/dwm-xres"
 [ -f "$Xres" ] && sed -i -e "s|^dwm.selbgcolor:.*|dwm.selbgcolor: $Accent|" -e "s|^dwm.selbordercolor:.*|dwm.selbordercolor: $Accent|" "$Xres"
 
 echo "accent: $Accent"
