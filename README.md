@@ -73,7 +73,7 @@ Programs that should start at login (status bar, wallpaper, compositor) go in `~
 
 ## Status bar
 
-The status bar is a separate project: [sxstatus](https://github.com/vq6oon/sxstatus). The wifi and bluetooth keys below call its dmenu menus, so clone it to `~/.config/sxstatus`. Its icons come from Font Awesome, which is already in `fonts[]` in `config.h`.
+The status bar is a separate project: [sxstatus](https://github.com/vq6oon/sxstatus). The wifi, bluetooth, power profile and picom keys below call its dmenu menus, and the emoji picker uses its `dmenu_sx` for colors, so clone it to `~/.config/sxstatus`. Its icons come from Font Awesome, which is already in `fonts[]` in `config.h`.
 
 ## Keybindings
 
@@ -176,7 +176,7 @@ There is no confirmation for reboot and shutdown.
 
 Bar colors follow the wallpaper using [pywal](https://github.com/dylanaraps/pywal) and the xrdb patch. The status bar from [sxstatus](https://github.com/vq6oon/sxstatus), notifications and kitty follow too.
 
-    sudo apt install xdotool pipx nitrogen inotify-tools dunst libnotify-bin adwaita-icon-theme
+    sudo apt install xdotool pipx nitrogen inotify-tools dunst libnotify-bin adwaita-icon-theme imagemagick
     pipx install pywal
     ./pywal/install.sh
 
@@ -189,7 +189,7 @@ Add this to `~/.xsessionrc`, with the `xrdb` line before the status bar starts:
 
 Then pick a wallpaper in nitrogen and click Apply. `theme-watch` notices the change and runs `theme`, which regenerates the colors, reloads the dwm bar, restarts sxstatus and recolors notifications and kitty. You can also run `theme` yourself, or `theme /path/to/image`. `Super + Shift + F5` reloads the bar colors from X resources by hand.
 
-The status bar text uses the same foreground color as the dwm bar. Notification borders use an accent picked from the wallpaper and lightened until it is readable.
+The status bar text uses the same foreground color as the dwm bar. The accent color is picked from the saturated pixels of the wallpaper itself, not from the wal palette, so near-monochrome wallpapers do not get a random tinted accent. If nothing is saturated, it stays a neutral light gray. The accent is used for the selected tag and the notification borders. For near-monochrome wallpapers the base colors are also pulled back toward neutral, because wal can tint them (a gray image can give a reddish background).
 
 To make kitty follow the wallpaper too, add this at the end of `~/.config/kitty/kitty.conf`, below the theme block:
 
@@ -198,6 +198,8 @@ To make kitty follow the wallpaper too, add this at the end of `~/.config/kitty/
 If you ever picked a theme with `kitten themes`, remove `~/.config/kitty/dark-theme.auto.conf`, because it overrides these colors in new windows.
 
 Without pywal, dwm simply uses the colors set in `config.h`.
+
+To make Firefox follow the wallpaper too, install [Pywalfox](https://github.com/Frewacom/pywalfox) (the add-on and the native app: `pipx install pywalfox` then `pywalfox install`). `theme` calls `pywalfox update` when it is installed. Firefox uses the plain wal palette, not the accent above.
 
 ## Emoji picker (optional)
 
