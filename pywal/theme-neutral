@@ -47,4 +47,29 @@ if [ -f "$Dir/colors" ]; then
     done < "$Dir/colors" > "$Dir/colors.new" && mv "$Dir/colors.new" "$Dir/colors"
 fi
 
+
+# firefox (pywalfox reads this palette file)
+if [ -f "$Dir/colors" ]; then
+    while read -r c; do
+        [ -n "$c" ] && soft "$c" && echo
+    done < "$Dir/colors" > "$Dir/colors.new" && mv "$Dir/colors.new" "$Dir/colors"
+fi
+
+
+# newer pywalfox may read colors.json, keep it in sync with the softened palette
+if [ -f "$Dir/colors.json" ] && command -v python3 >/dev/null; then
+python3 - "$Dir/colors.json" "$Dir/colors" << 'PY'
+import json, sys
+path, colors = sys.argv[1], sys.argv[2]
+lines = [l.strip() for l in open(colors) if l.strip()]
+d = json.load(open(path))
+for i, c in enumerate(lines[:16]):
+    d["colors"]["color%d" % i] = c
+d["special"]["background"] = lines[0]
+d["special"]["foreground"] = lines[15]
+d["special"]["cursor"] = lines[15]
+json.dump(d, open(path, "w"), indent=4)
+PY
+fi
+
 echo "neutralized (saturation $Sat)"
