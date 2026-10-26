@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# pick an accent from the wallpaper pixels and write it where the
+# status bar, dwm bar and notifications read it
+# usage: theme-accent /path/to/wallpaper
+
+Wall="$1"
+[ -f "$Wall" ] || exit 1
+Im=$(command -v magick || command -v convert) || exit 1
+
+Accent=$("$Im" "$Wall" -sample 300x300 -depth 8 txt:- 2>/dev/null | awk '
+function hx(c) { return index("0123456789abcdef", tolower(c)) - 1 }
+function byte(s) { return hx(substr(s, 1, 1)) * 16 + hx(substr(s, 2, 1)) }
+/^#/ { next }
+{
+    if (!match($0, /#[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]/)) next
+    h = substr($0, RSTART + 1, 6)
+    r = byte(substr(h, 1, 2)); g = byte(substr(h, 3, 2)); b = byte(substr(h, 5, 2))
+    n++
+    mx = r; if (g > mx) mx = g; if (b > mx) mx = b
+    mn = r; if (g < mn) mn = g; if (b < mn) mn = b
+    d = mx - mn
+    if (mx < 64 || d / mx < 0.35) next
+    if (mx == r) hue = (g - b) / d
+    else if (mx == g) hue = 2 + (b - r) / d
+    else hue = 4 + (r - g) / d
+    hue = hue * 60; if (hue < 0) hue += 360
+    k = int(hue / 15)
+    w = d / 255
+    W[k] += w; R[k] += r * w; G[k] += g * w; B[k] += b * w; C[k]++
+}
+END {
+    best = -1; bw = 0
+    for (k = 0; k < 24; k++) if (W[k] > bw) { bw = W[k]; best = k }
+    if (n == 0 || best < 0 || C[best] / n < 0.001) exit
+    printf "#%02x%02x%02x", int(R[best] / W[best]), int(G[best] / W[best]), int(B[best] / W[best])
+}')
+
+# no saturated color in the wallpaper: stay neutral
+[ -n "$Accent" ] || Accent="#c4cdce"
+
+# lighten until readable on a dark bar
+lum() { echo $(( ($1 * 299 + $2 * 587 + $3 * 114) / 1000 )); }
+r=$((16#${Accent:1:2})); g=$((16#${Accent:3:2})); b=$((16#${Accent:5:2}))
+for _ in 1 2 3 4 5 6 7 8 9 10; do
+    [ "$(lum $r $g $b)" -ge 150 ] && break
+    r=$((r + (255 - r) / 5)); g=$((g + (255 - g) / 5)); b=$((b + (255 - b) / 5))
+done
+Accent=$(printf '#%02x%02x%02x' $r $g $b)
+
+printf 'Accent="%s"\n' "$Accent" > ~/.cache/wal/sxstatus-colors
+
+# selected tag in the dwm bar follows the accent too
+Xres="$HOME/.cache/wal/dwm-xres"
+[ -f "$Xres" ] && sed -i -e "s|^dwm.selbgcolor:.*|dwm.selbgcolor: $Accent|" -e "s|^dwm.selbordercolor:.*|dwm.selbordercolor: $Accent|" "$Xres"
+
+echo "accent: $Accent"

@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# near-monochrome wallpapers: wal can still tint the base colors (a gray
+# image can give a reddish background). Pull them back toward neutral.
+# usage: theme-neutral /path/to/wallpaper
+
+Wall="$1"
+[ -f "$Wall" ] || exit 1
+Im=$(command -v magick || command -v convert) || exit 1
+
+Sat=$("$Im" "$Wall" -sample 200x200 -colorspace HSL -channel G -separate +channel -format '%[fx:mean]' info: 2>/dev/null)
+awk -v s="${Sat:-1}" 'BEGIN { exit !(s < 0.15) }' || { echo "colorful wallpaper ($Sat), left alone"; exit 0; }
+
+soft() {
+    local h=${1#\#} r g b
+    r=$((16#${h:0:2})); g=$((16#${h:2:2})); b=$((16#${h:4:2}))
+    awk -v r="$r" -v g="$g" -v b="$b" 'BEGIN {
+        l = (r * 299 + g * 587 + b * 114) / 1000; k = 0.2
+        printf "#%02x%02x%02x", int(l + (r - l) * k), int(l + (g - l) * k), int(l + (b - l) * k) }'
+}
+
+Dir="$HOME/.cache/wal"
+
+# dwm bar (the selected tag keeps the accent)
+for key in normbgcolor normfgcolor normbordercolor selfgcolor; do
+    old=$(awk -v k="dwm.$key:" '$1 == k { print $2 }' "$Dir/dwm-xres")
+    [ -n "$old" ] && sed -i "s|^dwm.$key:.*|dwm.$key: $(soft "$old")|" "$Dir/dwm-xres"
+done
+
+# kitty
+for key in background foreground cursor; do
+    old=$(awk -v k="$key" '$1 == k { print $2 }' "$Dir/colors-kitty.conf")
+    [ -n "$old" ] && sed -i "s|^$key[[:space:]].*|$key $(soft "$old")|" "$Dir/colors-kitty.conf"
+done
+
+# notifications read these
+for key in background foreground; do
+    old=$(grep -m1 "^$key=" "$Dir/colors.sh" | cut -d"'" -f2)
+    [ -n "$old" ] && sed -i "s|^$key=.*|$key='$(soft "$old")'|" "$Dir/colors.sh"
+done
+
+echo "neutralized (saturation $Sat)"

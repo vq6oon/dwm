@@ -13,6 +13,8 @@ Wall=$(realpath -- "$Wall" 2>/dev/null)
 [ -n "$1" ] && nitrogen --set-zoom-fill "$Wall" --save
 
 wal -i "$Wall" -n -s -t -q 2>/dev/null
+theme-accent "$Wall"
+theme-neutral "$Wall"
 xrdb -merge ~/.cache/wal/dwm-xres
 xdotool key super+shift+F5
 pkill -USR1 -x kitty
