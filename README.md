@@ -73,7 +73,7 @@ Programs that should start at login (status bar, wallpaper, compositor) go in `~
 
 ## Status bar
 
-The status bar is a separate project: [sxstatus](https://github.com/vq6oon/sxstatus). The wifi, bluetooth, power profile and picom keys below call its dmenu menus, and the emoji picker uses its `dmenu_sx` for colors, so clone it to `~/.config/sxstatus`. Its icons come from Font Awesome, which is already in `fonts[]` in `config.h`.
+The status bar is a separate project: [sxstatus](https://github.com/vq6oon/sxstatus). The wifi, bluetooth, power profile, picom and camera mirror keys below call its dmenu menus, and the emoji picker uses its `dmenu_sx` for colors, so clone it to `~/.config/sxstatus`. Its icons come from Font Awesome, which is already in `fonts[]` in `config.h`.
 
 ## Keybindings
 
@@ -92,6 +92,7 @@ The status bar is a separate project: [sxstatus](https://github.com/vq6oon/sxsta
 | `Super + M` | Spotify |
 | `Super + R` | OBS Studio |
 | `Super + V` | Emoji picker (see below) |
+| `Super + Shift + C` | Mirror camera menu: on / off (see below) |
 | `Super + F` | Mouse driver (Fantech X9 Thor, personal, change or remove in `config.h`) |
 
 ### Workspaces
@@ -199,7 +200,7 @@ If you ever picked a theme with `kitten themes`, remove `~/.config/kitty/dark-th
 
 Without pywal, dwm simply uses the colors set in `config.h`.
 
-To make Firefox follow the wallpaper too, install [Pywalfox](https://github.com/Frewacom/pywalfox) (the add-on and the native app: `pipx install pywalfox` then `pywalfox install`). `theme` calls `pywalfox update` when it is installed. Firefox uses the plain wal palette, not the accent above.
+To make Firefox follow the wallpaper too, install [Pywalfox](https://github.com/Frewacom/pywalfox) (the add-on and the native app: `pipx install pywalfox` then `pywalfox install`). `theme` calls `pywalfox update` when it is installed. Firefox uses the wal palette, not the accent above. For near-monochrome wallpapers that palette is softened too.
 
 ## Emoji picker (optional)
 
@@ -210,6 +211,21 @@ Type emoji in any app with `Super + V`, using [bemoji](https://github.com/marty-
     install -m 755 /tmp/bemoji/bemoji ~/.local/bin/bemoji
 
 The emoji list is downloaded on first run, so it needs an internet connection once.
+
+## Mirror camera (optional)
+
+`Super + Shift + C` opens a menu to start or stop a mirrored copy of the webcam on a v4l2loopback device. Pick "Mirror Cam" in your video app, not the real camera, which `ffmpeg` holds while the mirror is on. The menu comes from [sxstatus](https://github.com/vq6oon/sxstatus), and the camera device is set at the top of `menus/cam_menu`.
+
+    sudo apt install ffmpeg v4l2loopback-dkms v4l-utils
+    sudo modprobe v4l2loopback video_nr=10 card_label="Mirror Cam" exclusive_caps=1
+
+To load the module at every boot, put the options in `/etc/modprobe.d/v4l2loopback.conf`:
+
+    options v4l2loopback video_nr=10 card_label="Mirror Cam" exclusive_caps=1
+
+and the module name in `/etc/modules-load.d/v4l2loopback.conf`:
+
+    v4l2loopback
 
 ## Transparency and blur (optional)
 
