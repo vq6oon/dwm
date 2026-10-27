@@ -76,6 +76,7 @@ static const char *obs[] = { "obs", NULL };
 static const char *restart[] = { "systemctl", "reboot", NULL };
 static const char *shutdown[] = { "systemctl", "poweroff", NULL };
 static const char *files[] = { "thunar", NULL };
+static const char *cammirror[] = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/cam_menu", NULL };
 static const char *powermenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/power_menu", NULL };
 static const char *picommenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/picom_menu", NULL };
 static const char *wifimenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/wifi_menu", NULL };
@@ -94,6 +95,7 @@ static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 
 static const Key keys[] = {
         /* modifier                     key        function        argument */
+        { MODKEY|ShiftMask,             XK_c,      spawn,          {.v = cammirror } },
         { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = powermenu } },
         { MODKEY|ControlMask,           XK_p,      spawn,          {.v = picommenu } },
         { MODKEY,                       XK_n,      spawn,          {.v = wifimenu } },
