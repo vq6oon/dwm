@@ -214,7 +214,7 @@ The emoji list is downloaded on first run, so it needs an internet connection on
 
 ## Mirror camera (optional)
 
-`Super + Shift + C` opens a menu to start or stop a mirrored copy of the webcam on a v4l2loopback device. Pick "Mirror Cam" in your video app, not the real camera, which `ffmpeg` holds while the mirror is on. The menu comes from [sxstatus](https://github.com/vq6oon/sxstatus), and the camera device is set at the top of `menus/cam_menu`.
+`Super + Shift + C` opens a menu to start or stop a mirrored copy of the webcam on a v4l2loopback device. Pick that loopback camera in your video app, not the real one, which `ffmpeg` holds while the mirror is on. The menu comes from [sxstatus](https://github.com/vq6oon/sxstatus). Set `Cam` and `Out` at the top of `menus/cam_menu`: use the stable path from `ls /dev/v4l/by-id/` (the one ending in `index0`) for the camera, because `/dev/videoN` numbers change between reboots.
 
     sudo apt install ffmpeg v4l2loopback-dkms v4l-utils
     sudo modprobe v4l2loopback video_nr=10 card_label="Mirror Cam" exclusive_caps=1
