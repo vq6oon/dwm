@@ -18,6 +18,7 @@ My personal [dwm](https://dwm.suckless.org/) setup with all patches already appl
 - [warp](https://dwm.suckless.org/patches/warp/)
 - [xrdb](https://dwm.suckless.org/patches/xrdb/)
 - [alwayscenter](https://dwm.suckless.org/patches/alwayscenter/)
+- [attachbottom](https://dwm.suckless.org/patches/attachbottom/)
 
 The `patches/` folder is kept for reference and credit only. They are already applied to the source.
 
