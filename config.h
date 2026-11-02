@@ -93,6 +93,19 @@ static const char *voltoggle[] = { "amixer", "set", "Master", "toggle", NULL };
 static const char *brightup[] = { "brightnessctl", "set", "+5%", NULL };
 static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 
+/* commands run when a status bar section is clicked, the mouse button is exported as BUTTON */
+static const StatusCmd statuscmds[] = {
+        { "P='playerctl -i firefox,chromium,chrome,brave,vivaldi,opera,edge'; case $BUTTON in 1) $P play-pause;; 4) $P next;; 5) $P previous;; esac", 1 },
+        { "kitty -e btop", 2 },
+        { "$HOME/.config/sxstatus/menus/power_menu", 3 },
+        { "case $BUTTON in 1) amixer set Master toggle;; 4) amixer set Master 5%+;; 5) amixer set Master 5%-;; esac", 4 },
+        { "$HOME/.config/sxstatus/menus/wifi_menu", 5 },
+        { "$HOME/.config/sxstatus/menus/bt_menu", 6 },
+        { "thunar", 7 },
+        { "kitty -e sh -c 'cal -3; read -r _'", 8 },
+};
+static const char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
+
 static const Key keys[] = {
         /* modifier                     key        function        argument */
         { MODKEY|ShiftMask,             XK_c,      spawn,          {.v = cammirror } },
@@ -183,7 +196,11 @@ static const Button buttons[] = {
         { ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
         { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
         { ClkWinTitle,          0,              Button2,        zoom,           {0} },
-        { ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+        { ClkStatusText,        0,              Button1,        spawn,          {.v = statuscmd } },
+        { ClkStatusText,        0,              Button2,        spawn,          {.v = statuscmd } },
+        { ClkStatusText,        0,              Button3,        spawn,          {.v = statuscmd } },
+        { ClkStatusText,        0,              Button4,        spawn,          {.v = statuscmd } },
+        { ClkStatusText,        0,              Button5,        spawn,          {.v = statuscmd } },
         { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
         { ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
         { ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
