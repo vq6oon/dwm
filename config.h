@@ -101,8 +101,8 @@ static const StatusCmd statuscmds[] = {
         { "case $BUTTON in 1) amixer set Master toggle;; 4) amixer set Master 5%+;; 5) amixer set Master 5%-;; esac", 4 },
         { "$HOME/.config/sxstatus/menus/wifi_menu", 5 },
         { "$HOME/.config/sxstatus/menus/bt_menu", 6 },
-        { "thunar", 7 },
-        { "kitty -e sh -c 'cal -3; read -r _'", 8 },
+        { "korganizer", 7 },
+        { "kclock", 8 },
 };
 static const char *statuscmd[] = { "/bin/sh", "-c", NULL, NULL };
 
