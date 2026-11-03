@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# keep terminal colors readable on dark wallpapers: wal can give colors that
+# nearly vanish on the background (a black and red wallpaper gives dark reds)
+
+Dir="${WAL_DIR:-$HOME/.cache/wal}"
+Conf="$Dir/colors-kitty.conf"
+[ -f "$Conf" ] || exit 0
+
+lum() { echo $(( ($1 * 299 + $2 * 587 + $3 * 114) / 1000 )); }
+
+# lighten a hex color toward white until its luminance reaches $2
+lift() {
+    local h=${1#\#} min=$2 r g b i
+    r=$((16#${h:0:2})); g=$((16#${h:2:2})); b=$((16#${h:4:2}))
+    for i in 1 2 3 4 5 6 7 8 9 10 11 12; do
+        [ "$(lum $r $g $b)" -ge "$min" ] && break
+        r=$((r + (255 - r) / 5)); g=$((g + (255 - g) / 5)); b=$((b + (255 - b) / 5))
+    done
+    printf '#%02x%02x%02x' $r $g $b
+}
+
+# only for dark themes
+bg=$(awk '$1 == "background" { print $2 }' "$Conf")
+[ -n "$bg" ] || exit 0
+h=${bg#\#}
+[ "$(lum $((16#${h:0:2})) $((16#${h:2:2})) $((16#${h:4:2})))" -lt 100 ] || exit 0
+
+for spec in color1:125 color2:125 color3:125 color4:125 color5:125 color6:125 \
+            color8:100 color9:150 color10:150 color11:150 color12:150 color13:150 color14:150 \
+            color7:170 color15:200 foreground:170; do
+    key=${spec%%:*}; min=${spec##*:}
+    old=$(awk -v k="$key" '$1 == k { print $2 }' "$Conf")
+    [ -n "$old" ] || continue
+    sed -i "s|^$key[[:space:]].*|$key $(lift "$old" "$min")|" "$Conf"
+done
+
+
+# firefox: pywalfox reads this palette, lift it the same way
+if [ -f "$Dir/colors" ]; then
+    i=0
+    : > "$Dir/colors.new"
+    while read -r c; do
+        case $i in
+            1|2|3|4|5|6)         min=125 ;;
+            7)                   min=170 ;;
+            8)                   min=100 ;;
+            9|10|11|12|13|14)    min=150 ;;
+            15)                  min=200 ;;
+            *)                   min=0 ;;
+        esac
+        if [ "$min" -gt 0 ] && [ -n "$c" ]; then lift "$c" "$min"; else printf '%s' "$c"; fi
+        echo
+        i=$((i + 1))
+    done < "$Dir/colors" >> "$Dir/colors.new" && mv "$Dir/colors.new" "$Dir/colors"
+fi
+
+# keep colors.json in sync, in case pywalfox reads that one
+if [ -f "$Dir/colors.json" ] && command -v python3 >/dev/null; then
+python3 - "$Dir/colors.json" "$Dir/colors" << 'PY'
+import json, sys
+path, colors = sys.argv[1], sys.argv[2]
+lines = [l.strip() for l in open(colors) if l.strip()]
+d = json.load(open(path))
+for i, c in enumerate(lines[:16]):
+    d["colors"]["color%d" % i] = c
+d["special"]["background"] = lines[0]
+d["special"]["foreground"] = lines[15]
+d["special"]["cursor"] = lines[15]
+json.dump(d, open(path, "w"), indent=4)
+PY
+fi
+
+echo "terminal colors lifted"
