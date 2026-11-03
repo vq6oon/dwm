@@ -95,7 +95,7 @@ static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 
 /* commands run when a status bar section is clicked, the mouse button is exported as BUTTON */
 static const StatusCmd statuscmds[] = {
-        { "P='playerctl -i firefox,chromium,chrome,brave,vivaldi,opera,edge'; case $BUTTON in 1) $P play-pause;; 4) $P next;; 5) $P previous;; esac", 1 },
+        { "P='playerctl -p spotify,cmus,drift,firefox'; case $BUTTON in 1) $P play-pause;; 4) $P next;; 5) $P previous;; esac", 1 },
         { "kitty -e btop", 2 },
         { "$HOME/.config/sxstatus/menus/power_menu", 3 },
         { "case $BUTTON in 1) amixer set Master toggle;; 4) amixer set Master 5%+;; 5) amixer set Master 5%-;; esac", 4 },
