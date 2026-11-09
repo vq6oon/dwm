@@ -80,9 +80,8 @@ static const char *files[] = { "thunar", NULL };
 static const char *cammirror[] = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/cam_menu", NULL };
 static const char *powermenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/power_menu", NULL };
 static const char *picommenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/picom_menu", NULL };
-static const char *wifimenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/wifi_menu", NULL };
 static const char *btmenu[]     = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/bt_menu", NULL };
-static const char *wifitoggle[] = { "/bin/sh", "-c", "if [ \"$(nmcli radio wifi)\" = enabled ]; then nmcli radio wifi off; else nmcli radio wifi on; fi", NULL };
+static const char *wifitoggle[] = { "/bin/sh", "-c", "kitty -e nmtui", NULL };
 static const char *bttoggle[]   = { "/bin/sh", "-c", "if bluetoothctl show | grep -q 'Powered: yes'; then bluetoothctl power off; else rfkill unblock bluetooth; bluetoothctl power on; fi", NULL };
 static const char *emoji[] = { "/bin/sh", "-c", "BEMOJI_PICKER_CMD=\"$HOME/.config/sxstatus/menus/dmenu_sx -p emoji -i -l 20\" $HOME/.local/bin/bemoji -t", NULL };
 static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
@@ -100,7 +99,7 @@ static const StatusCmd statuscmds[] = {
         { "kitty -e btop", 2 },
         { "$HOME/.config/sxstatus/menus/power_menu", 3 },
         { "case $BUTTON in 1) amixer set Master toggle;; 4) amixer set Master 5%+;; 5) amixer set Master 5%-;; esac", 4 },
-        { "$HOME/.config/sxstatus/menus/wifi_menu", 5 },
+        { "kitty -e nmtui", 5 },
         { "$HOME/.config/sxstatus/menus/bt_menu", 6 },
         { "korganizer", 7 },
         { "kclock", 8 },
@@ -112,7 +111,6 @@ static const Key keys[] = {
         { MODKEY|ShiftMask,             XK_c,      spawn,          {.v = cammirror } },
         { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = powermenu } },
         { MODKEY|ControlMask,           XK_p,      spawn,          {.v = picommenu } },
-        { MODKEY,                       XK_n,      spawn,          {.v = wifimenu } },
         { MODKEY|ShiftMask,             XK_n,      spawn,          {.v = wifitoggle } },
         { MODKEY,                       XK_g,      spawn,          {.v = btmenu } },
         { MODKEY|ShiftMask,             XK_g,      spawn,          {.v = bttoggle } },
