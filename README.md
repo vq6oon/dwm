@@ -237,8 +237,9 @@ Opacity and blur come from [picom](https://github.com/yshui/picom), not from dwm
 | Mode | What it does |
 | --- | --- |
 | `vsync` | vsync only, no transparency |
-| `opacity` | vsync and 0.9 window opacity |
-| `blur` | opacity, vsync and dual kawase blur (heaviest) |
+| `opacity` | vsync and 0.8 window opacity |
+| `blur` | opacity and dual kawase blur, without vsync |
+| `blurvsync` | opacity, dual kawase blur and vsync (heaviest) |
 
     sudo apt install picom
     mkdir -p ~/.config/picom
