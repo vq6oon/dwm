@@ -66,31 +66,32 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "kitty", NULL };
-static const char *code[] = { "code", NULL };
-static const char *discord[] = { "discord", NULL };
-static const char *spotify[] = { "spotify", NULL };
-static const char *musictmpl[] = { "/bin/sh", "-c", "spotify & sleep 4; kitty --class peaclock -e peaclock & sleep 0.5; kitty --class cava -e cava &", NULL };
-static const char *browser[] = { "firefox", NULL };
-static const char *obs[] = { "obs", NULL };
-static const char *restart[] = { "systemctl", "reboot", NULL };
-static const char *shutdown[] = { "systemctl", "poweroff", NULL };
-static const char *files[] = { "thunar", NULL };
-static const char *cammirror[] = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/cam_menu", NULL };
-static const char *powermenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/power_menu", NULL };
-static const char *picommenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/picom_menu", NULL };
+static const char *dmenucmd[]   = { "dmenu_run", "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *termcmd[]    = { "kitty", NULL };
+static const char *code[]       = { "code", NULL };
+static const char *discord[]    = { "discord", NULL };
+static const char *spotify[]    = { "spotify", NULL };
+static const char *musictmpl[]  = { "/bin/sh", "-c", "spotify & sleep 4; kitty --class peaclock -e peaclock & sleep 0.5; kitty --class cava -e cava &", NULL };
+static const char *browser[]    = { "firefox", NULL };
+static const char *obs[]        = { "obs", NULL };
+static const char *restart[]    = { "systemctl", "reboot", NULL };
+static const char *shutdown[]   = { "systemctl", "poweroff", NULL };
+static const char *files[]      = { "thunar", NULL };
+static const char *cammirror[]  = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/cam_menu", NULL };
+static const char *powermenu[]  = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/power_menu", NULL };
+static const char *picommenu[]  = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/picom_menu", NULL };
+static const char *wifimenu[]   = { "/bin/sh", "-c", "kitty -e nmtui", NULL };
 static const char *btmenu[]     = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/bt_menu", NULL };
-static const char *wifitoggle[] = { "/bin/sh", "-c", "kitty -e nmtui", NULL };
+static const char *wifitoggle[] = { "/bin/sh", "-c", "if [ \"$(nmcli radio wifi)\" = enabled ]; then nmcli radio wifi off; else nmcli radio wifi on; fi", NULL };
 static const char *bttoggle[]   = { "/bin/sh", "-c", "if bluetoothctl show | grep -q 'Powered: yes'; then bluetoothctl power off; else rfkill unblock bluetooth; bluetoothctl power on; fi", NULL };
-static const char *emoji[] = { "/bin/sh", "-c", "BEMOJI_PICKER_CMD=\"$HOME/.config/sxstatus/menus/dmenu_sx -p emoji -i -l 20\" $HOME/.local/bin/bemoji -t", NULL };
+static const char *emoji[]      = { "/bin/sh", "-c", "BEMOJI_PICKER_CMD=\"$HOME/.config/sxstatus/menus/dmenu_sx -p emoji -i -l 20\" $HOME/.local/bin/bemoji -t", NULL };
 static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
 static const char *shotcrop[]   = { "/bin/sh", "-c", "mkdir -p $HOME/Pictures/Screenshots && maim -s | tee \"$HOME/Pictures/Screenshots/$(date +%Y-%m-%d-%H%M%S)-crop.png\" | xclip -selection clipboard -t image/png", NULL };
 static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
-static const char *volup[] = { "amixer", "set", "Master", "5%+", NULL };
-static const char *voldown[] = { "amixer", "set", "Master", "5%-", NULL };
-static const char *voltoggle[] = { "amixer", "set", "Master", "toggle", NULL };
-static const char *brightup[] = { "brightnessctl", "set", "+5%", NULL };
+static const char *volup[]      = { "amixer", "set", "Master", "5%+", NULL };
+static const char *voldown[]    = { "amixer", "set", "Master", "5%-", NULL };
+static const char *voltoggle[]  = { "amixer", "set", "Master", "toggle", NULL };
+static const char *brightup[]   = { "brightnessctl", "set", "+5%", NULL };
 static const char *brightdown[] = { "brightnessctl", "set", "5%-", NULL };
 
 /* commands run when a status bar section is clicked, the mouse button is exported as BUTTON */
@@ -111,6 +112,7 @@ static const Key keys[] = {
         { MODKEY|ShiftMask,             XK_c,      spawn,          {.v = cammirror } },
         { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = powermenu } },
         { MODKEY|ControlMask,           XK_p,      spawn,          {.v = picommenu } },
+        { MODKEY,                       XK_n,      spawn,          {.v = wifimenu } },
         { MODKEY|ShiftMask,             XK_n,      spawn,          {.v = wifitoggle } },
         { MODKEY,                       XK_g,      spawn,          {.v = btmenu } },
         { MODKEY|ShiftMask,             XK_g,      spawn,          {.v = bttoggle } },
