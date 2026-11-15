@@ -168,6 +168,8 @@ There is no confirmation for reboot and shutdown.
 
 | Keybind | Action |
 | --- | --- |
+| `Super + Y` | Theme menu: light / dark |
+| `Super + Shift + Y` | Toggle theme (light / dark) |
 | `Super + Shift + P` | Power profile menu (needs power-profiles-daemon) |
 | `Super + Ctrl + P` | Picom mode menu: blur + opacity + vsync, opacity + vsync, vsync only, off |
 | `Super + Shift + B` | Toggle status bar |
@@ -191,7 +193,7 @@ Add this to `~/.xsessionrc`, with the `xrdb` line before the status bar starts:
     dunst &
     ~/.local/bin/theme-watch &
 
-Then pick a wallpaper in nitrogen and click Apply. `theme-watch` notices the change and runs `theme`, which regenerates the colors, reloads the dwm bar, restarts sxstatus and recolors notifications and kitty. You can also run `theme` yourself, or `theme /path/to/image`. `Super + Shift + F5` reloads the bar colors from X resources by hand.
+Then pick a wallpaper in nitrogen and click Apply. `theme-watch` notices the change and runs `theme`, which regenerates the colors, reloads the dwm bar, restarts sxstatus and recolors notifications and kitty. You can also run `theme` yourself, or `theme /path/to/image`. `Super + Shift + F5` reloads the bar colors from X resources by hand. You can also pick a mode with the theme menu (`Super + Y`) or switch between light and dark with `Super + Shift + Y`.
 
 The status bar text uses the same foreground color as the dwm bar. The accent color is picked from the saturated pixels of the wallpaper itself, not from the wal palette, so near-monochrome wallpapers do not get a random tinted accent. If nothing is saturated, it stays a neutral light gray. The accent is used for the selected tag and the notification borders. For near-monochrome wallpapers the base colors are also pulled back toward neutral, because wal can tint them (a gray image can give a reddish background).
 
