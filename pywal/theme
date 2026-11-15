@@ -48,26 +48,6 @@ for f in "$Work"/wal/*; do
     cp -f "$f" "$HOME/.cache/wal/.$n.tmp" && mv -f "$HOME/.cache/wal/.$n.tmp" "$HOME/.cache/wal/$n"
 done
 
-# transparency over a busy wallpaper looks muddy on a light theme: use a mode
-# without opacity while light, and bring the previous mode back on dark
-PicomDir="$HOME/.config/picom"
-PicomChanged=0
-if [ "$Mode" = light ]; then
-    if [ ! -f "$PicomDir/mode-dark" ]; then
-        cur=$(cat "$PicomDir/mode" 2>/dev/null)
-        case "$cur" in
-            blur|blurvsync|opacity)
-                echo "$cur" > "$PicomDir/mode-dark"
-                echo vsync > "$PicomDir/mode"
-                PicomChanged=1 ;;
-        esac
-    fi
-elif [ -f "$PicomDir/mode-dark" ]; then
-    mv "$PicomDir/mode-dark" "$PicomDir/mode"
-    PicomChanged=1
-fi
-[ "$PicomChanged" = 1 ] && "$HOME/.config/sxstatus/menus/picom_menu" restore
-
 # GTK apps follow the mode (GTK3 apps like thunar need the theme name, not only color-scheme)
 if [ "$Mode" = light ]; then
     gsettings set org.gnome.desktop.interface color-scheme prefer-light
