@@ -80,6 +80,8 @@ static const char *files[]      = { "thunar", NULL };
 static const char *cammirror[]  = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/cam_menu", NULL };
 static const char *powermenu[]  = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/power_menu", NULL };
 static const char *picommenu[]  = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/picom_menu", NULL };
+static const char *thememenu[]   = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/theme_menu", NULL };
+static const char *themetoggle[] = { "/bin/sh", "-c", "$HOME/.local/bin/theme toggle >> /tmp/theme.log 2>&1", NULL };
 static const char *wifimenu[]   = { "/bin/sh", "-c", "kitty -e nmtui", NULL };
 static const char *btmenu[]     = { "/bin/sh", "-c", "$HOME/.config/sxstatus/menus/bt_menu", NULL };
 static const char *wifitoggle[] = { "/bin/sh", "-c", "if [ \"$(nmcli radio wifi)\" = enabled ]; then nmcli radio wifi off; else nmcli radio wifi on; fi", NULL };
@@ -112,6 +114,8 @@ static const Key keys[] = {
         { MODKEY|ShiftMask,             XK_c,      spawn,          {.v = cammirror } },
         { MODKEY|ShiftMask,             XK_p,      spawn,          {.v = powermenu } },
         { MODKEY|ControlMask,           XK_p,      spawn,          {.v = picommenu } },
+        { MODKEY,                       XK_y,      spawn,          {.v = thememenu } },
+        { MODKEY|ShiftMask,             XK_y,      spawn,          {.v = themetoggle } },
         { MODKEY,                       XK_n,      spawn,          {.v = wifimenu } },
         { MODKEY|ShiftMask,             XK_n,      spawn,          {.v = wifitoggle } },
         { MODKEY,                       XK_g,      spawn,          {.v = btmenu } },

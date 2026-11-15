@@ -5,23 +5,40 @@
 
 export PATH="$HOME/.local/bin:$PATH"
 
-Wall="$1"
+ModeFile="$HOME/.config/theme-mode"
+if [ ! -f "$ModeFile" ]; then
+    echo "dark" > "$ModeFile"
+fi
+Mode=$(cat "$ModeFile" 2>/dev/null); [ "$Mode" = light ] || Mode=dark
+Wall=""
+for a in "$@"; do
+    case "$a" in
+        light|dark) Mode=$a ;;
+        toggle)     [ "$Mode" = light ] && Mode=dark || Mode=light ;;
+        *)          Wall=$a ;;
+    esac
+done
+echo "$Mode" > "$ModeFile"
+export THEME_MODE=$Mode
+Flag=""; [ "$Mode" = light ] && Flag="-l"
+Given="$Wall"
 [ -z "$Wall" ] && Wall=$(grep -m1 '^file=' ~/.config/nitrogen/bg-saved.cfg | cut -d= -f2-)
 Wall=$(realpath -- "$Wall" 2>/dev/null)
 [ -f "$Wall" ] || { echo "wallpaper not found: $Wall" >&2; exit 1; }
 
-[ -n "$1" ] && nitrogen --set-zoom-fill "$Wall" --save
+[ -n "$Given" ] && nitrogen --set-zoom-fill "$Wall" --save
 
 # build the palette in a work folder, so apps that watch ~/.cache/wal
 # (pywalfox does) only ever see the finished palette
 Work="$HOME/.cache/wal-work"
 mkdir -p "$Work" "$HOME/.cache/wal"
-XDG_CACHE_HOME="$Work" wal -i "$Wall" -n -s -t -q 2>/dev/null
+XDG_CACHE_HOME="$Work" wal -i "$Wall" $Flag -n -s -t -q 2>/dev/null
 [ -f "$Work/wal/colors" ] || { echo "wal did not write to $Work/wal" >&2; exit 1; }
 
 export WAL_DIR="$Work/wal"
 theme-accent "$Wall"
 theme-neutral "$Wall"
+theme-contrast
 unset WAL_DIR
 
 # publish the finished files, one atomic rename each
@@ -31,9 +48,48 @@ for f in "$Work"/wal/*; do
     cp -f "$f" "$HOME/.cache/wal/.$n.tmp" && mv -f "$HOME/.cache/wal/.$n.tmp" "$HOME/.cache/wal/$n"
 done
 
+# transparency over a busy wallpaper looks muddy on a light theme: use a mode
+# without opacity while light, and bring the previous mode back on dark
+PicomDir="$HOME/.config/picom"
+PicomChanged=0
+if [ "$Mode" = light ]; then
+    if [ ! -f "$PicomDir/mode-dark" ]; then
+        cur=$(cat "$PicomDir/mode" 2>/dev/null)
+        case "$cur" in
+            blur|blurvsync|opacity)
+                echo "$cur" > "$PicomDir/mode-dark"
+                echo vsync > "$PicomDir/mode"
+                PicomChanged=1 ;;
+        esac
+    fi
+elif [ -f "$PicomDir/mode-dark" ]; then
+    mv "$PicomDir/mode-dark" "$PicomDir/mode"
+    PicomChanged=1
+fi
+[ "$PicomChanged" = 1 ] && "$HOME/.config/sxstatus/menus/picom_menu" restore
+
+# GTK apps follow the mode (GTK3 apps like thunar need the theme name, not only color-scheme)
+if [ "$Mode" = light ]; then
+    gsettings set org.gnome.desktop.interface color-scheme prefer-light
+    gsettings set org.gnome.desktop.interface gtk-theme Adwaita
+else
+    gsettings set org.gnome.desktop.interface color-scheme prefer-dark
+    gsettings set org.gnome.desktop.interface gtk-theme Adwaita-dark
+fi
+
+# GTK3 apps read settings.ini directly when no xsettings daemon runs (as under plain dwm)
+for Ini in "$HOME/.config/gtk-3.0/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"; do
+    [ -f "$Ini" ] || continue
+    if [ "$Mode" = light ]; then
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Adwaita/; s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' "$Ini"
+    else
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Adwaita-dark/; s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' "$Ini"
+    fi
+done
+
 xrdb -merge ~/.cache/wal/dwm-xres
 xdotool key super+shift+F5
 pkill -USR1 -x kitty
 theme-dunst
-pkill -f sxstatus; sxstatus &
-command -v pywalfox >/dev/null && timeout 5 pywalfox update >/dev/null 2>&1 &
+pkill -x sxstatus; sxstatus &
+command -v pywalfox >/dev/null && (timeout 5 pywalfox "$Mode" && timeout 5 pywalfox update) >/dev/null 2>&1 &
