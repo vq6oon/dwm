@@ -2,9 +2,7 @@
 
 My personal [dwm](https://dwm.suckless.org/) setup with all patches already applied. No manual patching needed, just clone, build, and go.
 
-<p align="center">
-<img src="screenshots/dwm.jpg" alt="dwm screenshot" width="800">
-</p>
+<a href="https://github.com/vq6oon/dotfiles/blob/main/screenshots/dwm.jpg"><img src="https://github.com/vq6oon/dotfiles/raw/refs/heads/main/screenshots/dwm.jpg" alt="dwm screenshot" width="800"></a>
 
 ## Patches
 
@@ -51,6 +49,8 @@ Without the font, the layout symbols show an empty box. To skip it, edit the `la
 
 ## Installation
 
+For the full desktop setup (wallpaper themes, picom profiles, screenshots, and application configs), see [vq6oon/dotfiles](https://github.com/vq6oon/dotfiles). This repository contains only dwm source, patches, and build assets.
+
     git clone https://github.com/vq6oon/dwm.git
     cd dwm
     ./fonts/install-waycat.sh
@@ -72,7 +72,7 @@ With a display manager, add a session entry at `/usr/share/xsessions/dwm.desktop
     Exec=dwm
     Type=Application
 
-Programs that should start at login (status bar, wallpaper, compositor) go in `~/.xsessionrc` for a display manager, or in `~/.xinitrc` before `exec dwm` for `startx`.
+Programs that should start at login go in `~/.xsessionrc` for a display manager, or in `~/.xinitrc` before `exec dwm` for `startx`. Full desktop autostart and theme setup live in [dotfiles](https://github.com/vq6oon/dotfiles).
 
 ## Status bar
 
@@ -157,6 +157,7 @@ Screenshots go to `~/Pictures/Screenshots`.
 | `Super + F6` / `F5` | Volume up / down |
 | `Super + F3` | Toggle mute |
 | `Super + F9` / `F8` | Brightness up / down |
+| `Super + F10` | Caffeine toggle (block screen blank / DPMS) |
 | `Super + N` | Wifi menu |
 | `Super + Shift + N` | Toggle wifi |
 | `Super + G` | Bluetooth menu |
@@ -180,32 +181,16 @@ There is no confirmation for reboot and shutdown.
 
 ## Theme from wallpaper (optional)
 
-Bar colors follow the wallpaper using [pywal](https://github.com/dylanaraps/pywal) and the xrdb patch. The status bar from [sxstatus](https://github.com/vq6oon/sxstatus), notifications and kitty follow too.
+Bar colors can follow the wallpaper using [pywal](https://github.com/dylanaraps/pywal) and the xrdb patch. The complete theme scripts and pywal templates are in [vq6oon/dotfiles](https://github.com/vq6oon/dotfiles); install the dotfiles repo to use them. The status bar from [sxstatus](https://github.com/vq6oon/sxstatus), notifications, kitty, and Firefox can follow the generated palette too.
 
-    sudo apt install xdotool pipx nitrogen inotify-tools dunst libnotify-bin adwaita-icon-theme imagemagick
-    pipx install pywal
-    ./pywal/install.sh
-
-Add this to `~/.xsessionrc`, with the `xrdb` line before the status bar starts:
+For manual startup ordering, merge the generated dwm colors before starting dwm and sxstatus:
 
     xrdb -merge ~/.cache/wal/dwm-xres
-    nitrogen --restore &
-    dunst &
     ~/.local/bin/theme-watch &
 
-Then pick a wallpaper in nitrogen and click Apply. `theme-watch` notices the change and runs `theme`, which regenerates the colors, reloads the dwm bar, restarts sxstatus and recolors notifications and kitty. You can also run `theme` yourself, or `theme /path/to/image`. `Super + Shift + F5` reloads the bar colors from X resources by hand. You can also pick a mode with the theme menu (`Super + Y`) or switch between light and dark with `Super + Shift + Y`.
+The dotfiles repo owns wallpaper watcher/theme commands and pywal templates. This repo only contains dwm's xrdb integration. Without pywal, dwm uses the colors in `config.h`.
 
-The status bar text uses the same foreground color as the dwm bar. The accent color is picked from the saturated pixels of the wallpaper itself, not from the wal palette, so near-monochrome wallpapers do not get a random tinted accent. If nothing is saturated, it stays a neutral light gray. The accent is used for the selected tag and the notification borders. For near-monochrome wallpapers the base colors are also pulled back toward neutral, because wal can tint them (a gray image can give a reddish background).
-
-To make kitty follow the wallpaper too, add this at the end of `~/.config/kitty/kitty.conf`, below the theme block:
-
-    include ~/.cache/wal/colors-kitty.conf
-
-If you ever picked a theme with `kitten themes`, remove `~/.config/kitty/dark-theme.auto.conf`, because it overrides these colors in new windows.
-
-Without pywal, dwm simply uses the colors set in `config.h`.
-
-To make Firefox follow the wallpaper too, install [Pywalfox](https://github.com/Frewacom/pywalfox) (the add-on and the native app: `pipx install pywalfox` then `pywalfox install`). `theme` calls `pywalfox update` when it is installed. Firefox uses the wal palette, not the accent above. For near-monochrome wallpapers that palette is softened too.
+To make kitty follow wallpaper colors, add `include ~/.cache/wal/colors-kitty.conf` to `~/.config/kitty/kitty.conf`. Pywalfox is separately needed for Firefox wallpaper colors.
 
 ## Emoji picker (optional)
 
@@ -234,7 +219,7 @@ and the module name in `/etc/modules-load.d/v4l2loopback.conf`:
 
 ## Transparency and blur (optional)
 
-Opacity and blur come from [picom](https://github.com/yshui/picom), not from dwm. Three ready-made configs live in `picom/`, each one heavier than the last:
+Opacity and blur come from [picom](https://github.com/yshui/picom), not from dwm. Ready-made picom profiles live in [dotfiles](https://github.com/vq6oon/dotfiles/tree/main/.config/picom), not in this dwm repo. The profiles range from vsync-only to dual kawase blur:
 
 | Mode | What it does |
 | --- | --- |
@@ -244,8 +229,8 @@ Opacity and blur come from [picom](https://github.com/yshui/picom), not from dwm
 | `blurvsync` | opacity, dual kawase blur and vsync (heaviest) |
 
     sudo apt install picom
-    mkdir -p ~/.config/picom
-    cp picom/*.conf ~/.config/picom/
+
+Use the picom profiles provided by the dotfiles repo. The profile menu is part of the sxstatus submodule.
 
 `Super + Ctrl + P` opens a menu to switch between the modes or turn picom off, and the choice is remembered for the next login. The menu comes from [sxstatus](https://github.com/vq6oon/sxstatus). To start the last chosen mode at login, add this to `~/.xsessionrc`:
 
@@ -256,6 +241,10 @@ Blur is heavy on the GPU and can cause stutter and audio crackle while screen sh
 ## Configuration
 
 All settings live in `config.h` (`config.def.h` is kept in sync). Edit it, then rebuild with `sudo make clean install` and restart dwm.
+
+## Dotfiles
+
+This repository focuses on dwm. Shared desktop configuration, pywal theme scripts/templates, picom profiles, and the screenshot are maintained separately in [vq6oon/dotfiles](https://github.com/vq6oon/dotfiles).
 
 ## Credits
 

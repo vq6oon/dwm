@@ -89,6 +89,7 @@ static const char *bttoggle[]   = { "/bin/sh", "-c", "if bluetoothctl show | gre
 static const char *emoji[]      = { "/bin/sh", "-c", "BEMOJI_PICKER_CMD=\"$HOME/.config/sxstatus/menus/dmenu_sx -p emoji -i -l 20\" $HOME/.local/bin/bemoji -t", NULL };
 static const char *screenshot[] = { "/bin/sh", "-c", "scrot \"$HOME/Pictures/Screenshots/%Y-%m-%d-%T-screenshot.jpg\"", NULL };
 static const char *shotcrop[]   = { "/bin/sh", "-c", "mkdir -p $HOME/Pictures/Screenshots && maim -s | tee \"$HOME/Pictures/Screenshots/$(date +%Y-%m-%d-%H%M%S)-crop.png\" | xclip -selection clipboard -t image/png", NULL };
+static const char *caffeine[]   = { "/bin/sh", "-c", "$HOME/.local/bin/caffeine-toggle", NULL };
 static const char *mousetweak[] = { "/bin/sh", "-c", "python3 \"$HOME/.FantechX9ThorDriver/driver_frontend.py\"", NULL };
 static const char *volup[]      = { "amixer", "set", "Master", "5%+", NULL };
 static const char *voldown[]    = { "amixer", "set", "Master", "5%-", NULL };
@@ -139,6 +140,7 @@ static const Key keys[] = {
         { MODKEY,                       XK_F6,     spawn,          {.v = volup } },
         { MODKEY,                       XK_F5,     spawn,          {.v = voldown } },
         { MODKEY,                       XK_F3,     spawn,          {.v = voltoggle } },
+        { MODKEY,                       XK_F10,    spawn,          {.v = caffeine } },
         { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
         { MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
         { MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
